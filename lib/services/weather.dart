@@ -1,4 +1,25 @@
+import 'package:linkedin8webdata/services/location.dart';
+import 'package:linkedin8webdata/services/networking.dart';
+
 class WeatherModel {
+  NetworkHelper networkHelper = NetworkHelper();
+
+  Future<dynamic> getCityWeather(String city) async {
+    var weatherData = await networkHelper.getData({'q': city});
+    return weatherData;
+  }
+
+  Future<dynamic> getLocationWeather() async {
+    Location location = Location();
+    await location.getLocation();
+    var weatherData = await networkHelper.getData({
+      'lat': location.latitude.toString(),
+      'lon': location.longitude.toString()
+    });
+
+    return weatherData;
+  }
+
   String getWeatherIcon(int condition) {
     if (condition < 300) {
       return '🌩';
